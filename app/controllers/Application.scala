@@ -11,7 +11,7 @@ class Application @Inject()(val messagesApi: MessagesApi, val navbarHelpers: Nav
   //home page navbar helper
   def index(id: Int, isNew: Option[String]) = Action {
     isNew match {
-      case None =>
+      case None if !Item.items.isEmpty =>
         Ok (views.html.itempage (navbarHelpers.homePage, Item.items, id) (Item.itemForm.fill (Item.items (id) ) ) )
       case _ => Ok (views.html.itempage (navbarHelpers.homePage, Item.items, id) (Item.itemForm))
 
