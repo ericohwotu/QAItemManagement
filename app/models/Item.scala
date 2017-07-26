@@ -27,7 +27,7 @@ object Item {
   val items: ListBuffer[Item] = ListBuffer(
     Item("PS4", 245, "The ultimate in console gaming", "sony", 730),
     Item("XBOX ONE", 245, "The ultimate in console gaming", "Microsoft", 730),
-    Item("Samsung Galaxy S8", 245, "The sexiest smartphone available", "Samsung", 730),
+    Item("Samsung Galaxy S8", 245, "The sexiest smartphone available", "Samsung", 730)
   )
 
 }

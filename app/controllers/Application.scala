@@ -4,12 +4,13 @@ import models.Item
 import javax.inject.Inject
 import play.api.i18n._
 import play.api.mvc._
+import helpers.NavbarHelpers
 
-class Application @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport{
+class Application @Inject()(val messagesApi: MessagesApi, val navbarHelpers: NavbarHelpers) extends Controller with I18nSupport{
 
   //home page navbar helper
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    Ok(views.html.itempage(navbarHelpers.homePage, Item.items))
   }
 
   def formHandler = Action { implicit request: Request[AnyContent] =>
