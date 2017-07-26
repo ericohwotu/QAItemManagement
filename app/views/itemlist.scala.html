@@ -1,4 +1,4 @@
-@import scala.collection.mutable.ListBuffer
+@import scala.collection.mutable.ListBuffer; var index = 0
 @(items: ListBuffer[Item])
 
 <table class="table table-striped">
@@ -8,16 +8,26 @@
             <th>Price</th>
             <th>Description</th>
             <th>Manufacturer</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-    @for(item <- items) {
-        <tr>
-            <td>@item.name</td>
-            <td>@item.price</td>
-            <td>@item.description</td>
-            <td>@item.manufacturer</td>
-        </tr>
-    }
+
+        @{index = 0}
+        @for(item <- items) {
+            <a href="#">
+            <tr id="@index">
+
+                <td>@item.name</td>
+                <td>@item.price</td>
+                <td>@item.description</td>
+                <td>@item.manufacturer</td>
+                <td><a href="@routes.Application.deleteItem(index)">delete</a></td>
+
+            </tr>
+            </a>
+            @{index = index + 1}
+        }
+
     </tbody>
 </table>

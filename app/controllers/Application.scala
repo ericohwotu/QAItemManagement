@@ -9,19 +9,43 @@ import helpers.NavbarHelpers
 class Application @Inject()(val messagesApi: MessagesApi, val navbarHelpers: NavbarHelpers) extends Controller with I18nSupport{
 
   //home page navbar helper
-  def index = Action {
-    Ok(views.html.itempage(navbarHelpers.homePage, Item.items))
+  def index(id: Int, isNew: Option[String]) = Action {
+    isNew match {
+      case None =>
+        Ok (views.html.itempage (navbarHelpers.homePage, Item.items, id) (Item.itemForm.fill (Item.items (id) ) ) )
+      case _ => Ok (views.html.itempage (navbarHelpers.homePage, Item.items, id) (Item.itemForm))
+
+    }
   }
 
-  def formHandler = Action { implicit request: Request[AnyContent] =>
+  def formHandler(id: Int) = Action { implicit request: Request[AnyContent] =>
     val formResult = Item.itemForm.bindFromRequest
-
     formResult.fold({
-      errors => BadRequest("bad")
+      errors =>
+        println(errors)
+        BadRequest(views.html.itempage(navbarHelpers.homePage, Item.items, id)(errors))
     },{
-      item => Item.items.append(item)
-        Ok("added")
+      item => formHelper(item)
     })
   }
+
+  def deleteItem(id: Int) = Action {
+    Item.items.remove(id)
+    Redirect(routes.Application.index(isNew = None))
+  }
+
+  def formHelper(item: Item): Result = {
+    Item.items.filter(_.id == item.id) match{
+      case x if x.length == 0 =>
+        item.id = (Item.nId+1).toString
+        Item.items.append(item)
+        Item.nId += 1
+      case x if x.length == 1 =>
+        x.head.replace(item)
+    }
+    println(Item.items)
+    Redirect(routes.Application.index(isNew = None))
+  }
+
 
 }

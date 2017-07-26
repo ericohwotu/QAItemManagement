@@ -6,28 +6,46 @@ import play.api.data.Forms._
 import scala.collection.mutable.ListBuffer
 
 
-case class Item(name: String, price: Int, description: String = "",
-                manufacturer: String = "", warranty: Int = 720,
-                discount: Int = 0, seller: String = "", image: String = "")
+case class Item(var id: String="NULL", var name: String, var price: BigDecimal, var description: String = "",
+                var manufacturer: String = "", var warranty: Option[Int] = Some(720),
+                var discount: Option[BigDecimal] = Some(0), var seller: String = "", var image: String = ""){
+
+
+  def replace(item: Item): Unit ={
+    this.name = item.name
+    this.price = item.price
+    this.description = item.description
+    this.manufacturer = item.manufacturer
+    this.warranty = item.warranty
+    this.discount = item.discount
+    this.seller = item.seller
+    this.image = item.image
+  }
+
+}
 
 object Item {
 
+  var nId = 2
+
   val itemForm: Form[Item] = Form(
     mapping(
+      "id" -> text,
       "name" -> nonEmptyText,
-      "price" -> number(strict = true),
+      "price" -> bigDecimal(9,2),
       "description" -> text,
-      "manufactureer" -> text,
-      "warranty" -> number,
-      "discount" -> number(0, 100),
+      "manufacturer" -> text,
+      "warranty" -> optional(number),
+      "discount" -> optional(bigDecimal(9, 2)),
       "seller" -> text,
       "image" -> text
     )(Item.apply _)(Item.unapply _))
 
+
   val items: ListBuffer[Item] = ListBuffer(
-    Item("PS4", 245, "The ultimate in console gaming", "sony", 730),
-    Item("XBOX ONE", 245, "The ultimate in console gaming", "Microsoft", 730),
-    Item("Samsung Galaxy S8", 245, "The sexiest smartphone available", "Samsung", 730)
+    Item(0.toString,"PS4", 245, "The ultimate in console gaming", "sony", 730),
+    Item(1.toString,"XBOX ONE", 245, "The ultimate in console gaming", "Microsoft", 730),
+    Item(2.toString,"Samsung Galaxy S8", 245, "The sexiest smartphone available", "Samsung", 730)
   )
 
 }
