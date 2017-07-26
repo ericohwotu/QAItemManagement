@@ -2,6 +2,7 @@ package models
 
 import play.api.data._
 import play.api.data.Forms._
+import play.api.libs.json.Json
 
 import scala.collection.mutable.ListBuffer
 
@@ -43,9 +44,12 @@ object Item {
 
 
   val items: ListBuffer[Item] = ListBuffer(
-    Item(0.toString,"PS4", 245, "The ultimate in console gaming", "sony", 730),
-    Item(1.toString,"XBOX ONE", 245, "The ultimate in console gaming", "Microsoft", 730),
-    Item(2.toString,"Samsung Galaxy S8", 245, "The sexiest smartphone available", "Samsung", 730)
+    Item(0.toString,"PS4", 245, "The ultimate in console gaming", "sony", Some(730)),
+    Item(1.toString,"XBOX ONE", 245, "The ultimate in console gaming", "Microsoft", Some(730)),
+    Item(2.toString,"Samsung Galaxy S8", 245, "The sexiest smartphone available", "Samsung", Some(730))
   )
+
+  //mongodb stuff
+  implicit val itemFormat = Json.format[Item]
 
 }
